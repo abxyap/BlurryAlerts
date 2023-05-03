@@ -89,11 +89,13 @@ static UIColor *buttonDestructiveColor;
 			if(buttonBlurStyle == BUTTON_BLUR_STYLE_NONE) {
 				self.backgroundColor = buttonBackgroundColor;
 			} else {
+				NSLog(@"[BlurryAlerts] applyButtonStyle, buttonBlurStyle: %ld", buttonBlurStyle);
 				switch(buttonBlurStyle) {
 					case BUTTON_BLUR_STYLE_LIGHT:
 						[self setBackgroundColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:buttonBlurColorIntensity]];
 						break;
 					case BUTTON_BLUR_STYLE_DARK:
+						// [self setBackgroundColor:[UIColor blackColor]];
 						[self setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:buttonBlurColorIntensity]];
 						break;
 					case BUTTON_BLUR_STYLE_ADAPTIVE: {
@@ -215,7 +217,7 @@ static UIColor *buttonDestructiveColor;
 	DBG(@"[BlurryAlerts] Custom Controller: %@", arg1); 
 }
 
-// _dimmingView -> blurView
+
 - (void)viewDidLayoutSubviews {
 	%orig;
 
@@ -302,7 +304,9 @@ static UIColor *buttonDestructiveColor;
 	}
 }
 
+// _dimmingView -> blurView
 - (void)viewWillAppear:(BOOL)arg1 {
+	NSLog(@"[BlurryAlerts] UIAlertController, viewWillAppear: %d", arg1);
 	%orig;
 
 	if(!self.isBAEnabled)
@@ -315,6 +319,7 @@ static UIColor *buttonDestructiveColor;
 	}
 
 	// Apply blur
+	NSLog(@"[BlurryAlerts] UIAlertController, viewWillAppear -> Apply blur");
 	UIView *blurView = self._dimmingView;
 	blurView.alpha = 1;
 
@@ -325,6 +330,8 @@ static UIColor *buttonDestructiveColor;
 		bgView.alpha = backgroundBlurColorIntensity;
 	}
 
+	NSLog(@"[BlurryAlerts] UIAlertController, viewWillAppear -> backgroundBlurStyle: %ld", backgroundBlurStyle);
+	NSLog(@"[BlurryAlerts] UIAlertController, self: %@, blurView: %@, bgView: %@", self, blurView, bgView);
 	switch(backgroundBlurStyle) {
 		case BG_BLUR_STYLE_LIGHT:
 			[bgView setBackgroundColor:[UIColor whiteColor]];
@@ -346,6 +353,9 @@ static UIColor *buttonDestructiveColor;
 	
 	UIBlurEffect *blurEffect = [UIBlurEffect effectWithBlurRadius:backgroundBlurIntensity];
 	UIVisualEffectView *visualEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+
+	[bgView setFrame: blurView.frame];
+	[visualEffectView setFrame: blurView.frame];
 
 	visualEffectView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	blurView.autoresizesSubviews = YES;
@@ -394,7 +404,7 @@ static UIColor *buttonDestructiveColor;
 %end
 
 static void loadPrefs() {
-	NSMutableDictionary *prefs = [[NSMutableDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/com.slyfabi.blurryalerts.plist"];
+	NSMutableDictionary *prefs = [[NSMutableDictionary alloc] initWithContentsOfFile:@"/var/jb/var/mobile/Library/Preferences/com.slyfabi.blurryalerts.plist"];
 
 	if([prefs objectForKey:@"isEnabled"] != nil)
 		tweakEnabled = [[prefs objectForKey:@"isEnabled"] boolValue];
@@ -443,6 +453,7 @@ static void loadPrefs() {
 }
 
 %ctor {
+	NSLog(@"[BlurryAlerts] Loaded");
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)loadPrefs, CFSTR("com.slyfabi.blurryalerts.settingschanged"), NULL, CFNotificationSuspensionBehaviorCoalesce);
 	loadPrefs();
 }

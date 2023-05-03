@@ -95,6 +95,7 @@
 }
 
 @property(readonly) UIView *_dimmingView;
+@property (readonly) UIView * _foregroundView;
 @property(readonly) _Bool _shouldProvideDimmingView;
 
 @property (nonatomic, assign) BOOL isBAEnabled;
@@ -113,6 +114,8 @@
 @interface UIBlurEffect (HookCat)
 {
 }
+@property (nonatomic,readonly) CGRect frame; 
+-(void)setFrame:(CGRect)arg1;
 
 +(id)effectWithBlurRadius:(double)arg1 ;
 
