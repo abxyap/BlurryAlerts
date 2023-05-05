@@ -1,7 +1,7 @@
 Package: com.slyfabi.blurryalerts
 Name: BlurryAlerts
 Depends: mobilesubstrate, org.thebigboss.libcolorpicker
-Version: 1.2.2-2
+Version: 1.2.2-3
 Architecture: iphoneos-arm
 Description: tvOS style alerts!
 Maintainer: SlyFabi

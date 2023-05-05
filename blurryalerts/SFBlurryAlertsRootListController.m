@@ -2,6 +2,7 @@
 
 #include <spawn.h>
 #include <signal.h>
+#import <dlfcn.h>
 
 #include "SFBlurryAlertsRootListController.h"
 
@@ -101,3 +102,8 @@ static NSString *prefsFileName = @"com.slyfabi.blurryalerts";
 }
 
 @end
+
+__attribute__((constructor)) static void initialize()
+{
+	dlopen("/var/jb/usr/lib/libcolorpicker.dylib", RTLD_GLOBAL);
+}

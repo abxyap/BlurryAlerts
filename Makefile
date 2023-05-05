@@ -23,7 +23,3 @@ BlurryAlerts_CFLAGS = -fobjc-arc
 include $(THEOS_MAKE_PATH)/tweak.mk
 SUBPROJECTS += blurryalerts
 include $(THEOS_MAKE_PATH)/aggregate.mk
-
-internal-stage::
-	$(ECHO_NOTHING)install_name_tool -change /usr/lib/libcolorpicker.dylib /var/jb/usr/lib/libcolorpicker.dylib $(THEOS_STAGING_DIR)/Library/PreferenceBundles/BlurryAlerts.bundle/BlurryAlerts$(ECHO_END)
-	$(ECHO_NOTHING)ldid -S $(THEOS_STAGING_DIR)/Library/PreferenceBundles/BlurryAlerts.bundle/BlurryAlerts$(ECHO_END)

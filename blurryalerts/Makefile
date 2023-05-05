@@ -18,7 +18,6 @@ BlurryAlerts_INSTALL_PATH = /Library/PreferenceBundles
 BlurryAlerts_FRAMEWORKS = UIKit
 BlurryAlerts_PRIVATE_FRAMEWORKS = Preferences
 BlurryAlerts_CFLAGS = -fobjc-arc
-BlurryAlerts_LIBRARIES = colorpicker
 
 include $(THEOS_MAKE_PATH)/bundle.mk
 
